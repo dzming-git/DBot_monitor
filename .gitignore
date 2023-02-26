@@ -1,0 +1,13 @@
+__pycache__/
+.vscode/
+third_party/
+app/conf/camera_list/camera_list.yaml
+
+# 忽略所有的 .env 环境变量文件
+.env
+
+# 忽略所有的 .idea/ 目录
+.idea/
+
+# 忽略所有的 node_modules/ 目录
+node_modules/
