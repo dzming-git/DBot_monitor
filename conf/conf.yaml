@@ -1,0 +1,9 @@
+rob_name: DBot
+server_ip: 0.0.0.0
+gocqhttp:
+  port: 5701
+  message_recv_route: /
+  tags: ['DBot', 'python', 'go-cqhttp']
+service:
+  port: 5703
+  func_dict_route: /func_dict
