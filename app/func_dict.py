@@ -64,7 +64,7 @@ def send_current_camera_image(gid=None, qid=None, msg_list=[]):
             message_send = "Failed to connect to camera"
     else:
         message_send = "无效热键"
-    return message_send
+    return message_send, False
     # msg_struct = Msg_struct(gid=gid, qid=qid, at=False, msg=message_send)
     # send_message(msg_struct)
 
@@ -72,7 +72,7 @@ def send_camera_list(gid=None, qid=None, msg_list=[]):
     message_send = ''
     for camera in CameraList._camera_list:
         message_send += f"IP地址 {camera['ip']}\n位置 {camera['location']}\n\n"
-    return message_send
+    return message_send, False
 
     # msg_struct = Msg_struct(gid=gid, qid=qid, at=False, msg=message_send)
     # send_message(msg_struct)

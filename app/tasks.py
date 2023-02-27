@@ -2,6 +2,7 @@ import threading
 from queue import Queue
 import time
 from app.func_dict import func_dict
+from api.message_sender import send_message_to_main_program
 
 class Task:
     def __init__(cls):
@@ -24,8 +25,8 @@ class Task:
             gid = task['gid']
             qid = task['qid']
             args = task['args']
-            message = func_dict[command](gid=gid, qid=qid, msg_list=args)
-
+            message, at = func_dict[command](gid=gid, qid=qid, msg_list=args)
+            send_message_to_main_program(message=message,gid=gid, qid=qid, at=at)
             time.sleep(0.1)
 
 task = Task()

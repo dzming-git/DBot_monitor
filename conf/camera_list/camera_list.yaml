@@ -1,5 +1,5 @@
 path_conf:
-  img_save_dir: ./third_party/go-cqhttp/data/images/monitor
+  img_save_dir: D:/实验室工作/02.项目开发/DBot/go-cqhttp/data/images/monitor
 camera_list:
   - ip: 192.168.1.16
     username: admin

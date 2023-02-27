@@ -20,3 +20,4 @@ message_broker:
   endpoints: 
     upload_commands: server_commands
     upload_endpoints: server_endpoints
+    server_results: server_results
