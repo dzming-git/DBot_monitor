@@ -5,7 +5,6 @@ from app.func_dict import func_dict
 from api.routes import route_registration
 from api.consul_client import consul_client
 from conf.route_info.route_info import RouteInfo
-from conf.authority.authority import Authority
 
 def register_consul():
     '''
@@ -33,17 +32,10 @@ def discover_bot(server_name):
     servers = consul_client.discover_servers(server_name)
     if servers:
         bot = servers[0]
-        config = {
-            'bot_find': True,
-            'bot_ip': bot[0],
-            'bot_port': bot[1],
-        }
-    else:
-        config = {
-            'bot_find': False,
-        }
-        print('主程序未开启')
-    return config
+        RouteInfo.update_bot(ip=bot[0], port=bot[1])
+        return True
+    print('主程序未开启')
+    return False
         
 def discover_message_broker(server_name):
     """
@@ -52,22 +44,15 @@ def discover_message_broker(server_name):
     servers = consul_client.discover_servers(server_name)
     if servers:
         message_broker = servers[0]
-        config = {
-            'message_broker_find': True,
-            'message_broker_ip': message_broker[0],
-            'message_broker_port': message_broker[1],
-        }
-    else:
-        config = {
-            'message_broker_find': False,
-        }
-        print('消息代理开启')
-    return config
+        RouteInfo.update_message_broker(ip=message_broker[0], port=message_broker[1])
+        return True
+    print('消息代理开启')
+    return False
 
 def upload_server_commands(app: Flask):
     # 注册支持的指令到主程序
-    message_broker_ip = app.config['message_broker_ip']
-    message_broker_port = app.config['message_broker_port']
+    message_broker_ip = RouteInfo.get_message_broker_ip()
+    message_broker_port = RouteInfo.get_message_broker_port()
     endpoint = RouteInfo.get_message_broker_endpoint('upload_commands')
     server_name = RouteInfo.get_server_name()
     commands = list(func_dict.keys())
@@ -75,8 +60,8 @@ def upload_server_commands(app: Flask):
 
 def upload_server_endpoints(app: Flask):
     # 注册支持的endpoint到主程序
-    message_broker_ip = app.config['message_broker_ip']
-    message_broker_port = app.config['message_broker_port']
+    message_broker_ip = RouteInfo.get_message_broker_ip()
+    message_broker_port = RouteInfo.get_message_broker_port()
     endpoint = RouteInfo.get_message_broker_endpoint('upload_endpoints')
     server_name = RouteInfo.get_server_name()
     endpoints_info = RouteInfo.get_server_endpoints_info()
@@ -84,13 +69,11 @@ def upload_server_endpoints(app: Flask):
 
 def create_monitor_app():
     monitor_app = Flask(__name__)
-    bot_config = discover_bot(RouteInfo.get_bot_name())
-    message_broker_config = discover_message_broker(RouteInfo.get_message_broker_name())
+    discover_bot(RouteInfo.get_bot_name())
+    discover_message_broker(RouteInfo.get_message_broker_name())
 
-    if bot_config['bot_find'] and message_broker_config['message_broker_find']:
+    if RouteInfo.is_bot_find() and RouteInfo.is_message_broker_find():
         config = {
-            **bot_config,
-            **message_broker_config,
             **register_consul()
         }
         monitor_app.config.update(config)

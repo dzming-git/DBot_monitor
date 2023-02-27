@@ -12,12 +12,36 @@ class RouteInfo:
             config = yaml.safe_load(f)
             cls._server_conf = config.get('server', {})
             cls._bot_conf = config.get('bot', {})
+            cls._bot_conf['find'] = False
             cls._message_broker_conf = config.get('message_broker', {})
+            cls._message_broker_conf['find'] = False
 
     # 机器人主程序配置方法
     @classmethod
     def get_bot_name(cls):
         return cls._bot_conf.get('name')
+    
+    @classmethod
+    def is_bot_find(cls):
+        return cls._bot_conf.get('find')
+    
+    @classmethod
+    def update_bot(cls, ip, port):
+        cls._bot_conf['find'] = True
+        cls._bot_conf['ip'] = ip
+        cls._bot_conf['port'] = port
+    
+    @classmethod
+    def get_bot_ip(cls):
+        if cls._bot_conf.get('find'):
+            return cls._bot_conf.get('ip')
+        return None
+    
+    @classmethod
+    def get_bot_port(cls):
+        if cls._bot_conf.get('find'):
+            return cls._bot_conf.get('port')
+        return None
 
     # 服务程序配置方法
     @classmethod
@@ -48,6 +72,28 @@ class RouteInfo:
     @classmethod
     def get_message_broker_name(cls):
         return cls._message_broker_conf.get('name')
+    
+    @classmethod
+    def is_message_broker_find(cls):
+        return cls._message_broker_conf.get('find')
+    
+    @classmethod
+    def update_message_broker(cls, ip, port):
+        cls._message_broker_conf['find'] = True
+        cls._message_broker_conf['ip'] = ip
+        cls._message_broker_conf['port'] = port
+    
+    @classmethod
+    def get_message_broker_ip(cls):
+        if cls._message_broker_conf.get('find'):
+            return cls._message_broker_conf.get('ip')
+        return None
+    
+    @classmethod
+    def get_message_broker_port(cls):
+        if cls._message_broker_conf.get('find'):
+            return cls._message_broker_conf.get('port')
+        return None
     
     @classmethod
     def get_message_broker_endpoint(cls, usage):
