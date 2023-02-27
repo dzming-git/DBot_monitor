@@ -3,7 +3,7 @@ import cv2
 import os
 from datetime import datetime
 import numpy as np
-from app.monitor_server.conf.camera_list.camera_list import CameraList
+from app.conf.camera_list.camera_list import CameraList
 
 def send_current_camera_image(gid=None, qid=None, msg_list=[]):
     message_send = ''

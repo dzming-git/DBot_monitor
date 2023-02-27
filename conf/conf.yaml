@@ -1,9 +1,17 @@
-rob_name: DBot
-server_ip: 0.0.0.0
-gocqhttp:
-  port: 5701
-  message_recv_route: /
-  tags: ['DBot', 'python', 'go-cqhttp']
-service:
+# 主程序配置
+server:
+  name: DBot_monitor
+  ip: 0.0.0.0
   port: 5703
-  func_dict_route: /func_dict
+  tags:
+    - DBot
+    - DBot_monitor
+    - python
+
+# 机器人主程序配置
+bot:
+  name: DBot_main
+
+# 消息代理配置
+message_broker:
+  name: DBot_message_broker

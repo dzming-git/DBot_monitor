@@ -1,38 +1,41 @@
 import yaml
 
 class Conf:
-    _conf = {}
+    _server_conf = {}
+    _bot_conf = {  }
+    _message_broker_conf = {}
 
     @classmethod
     def _load_config(cls, config_path):
-        with open(config_path) as f:
-            cls._conf = yaml.safe_load(f)
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config = yaml.safe_load(f)
+            cls._server_conf = config.get('server', {})
+            cls._bot_conf = config.get('bot', {})
+            cls._message_broker_conf = config.get('message_broker', {})
 
+    # 服务程序配置方法
     @classmethod
-    def get_rob_name(cls):
-        return cls._conf.get('rob_name')
+    def get_bot_name(cls):
+        return cls._bot_conf.get('name')
+
+    # 服务程序配置方法
+    @classmethod
+    def get_server_name(cls):
+        return cls._server_conf.get('name')
 
     @classmethod
     def get_server_ip(cls):
-        return cls._conf.get('server_ip')
+        return cls._server_conf.get('ip')
 
     @classmethod
-    def get_gocqhttp_port(cls):
-        return cls._conf.get('gocqhttp', {}).get('port')
+    def get_server_port(cls):
+        return cls._server_conf.get('port')
 
     @classmethod
-    def get_gocqhttp_tags(cls):
-        return cls._conf.get('gocqhttp', {}).get('tags')
+    def get_server_tags(cls):
+        return cls._server_conf.get('tags')
 
+    # 消息代理配置方法
     @classmethod
-    def get_gocqhttp_message_recv_route(cls):
-        return cls._conf.get('gocqhttp', {}).get('message_recv_route')
-
-    @classmethod
-    def get_service_port(cls):
-        return cls._conf.get('service', {}).get('port')
-
-    @classmethod
-    def get_service_func_dict_route(cls):
-        return cls._conf.get('service', {}).get('func_dict_route')
-
+    def get_message_broker_name(cls):
+        return cls._message_broker_conf.get('name')
