@@ -1,0 +1,38 @@
+commands:
+  USER: &USER
+    - '#调取监控'
+    - '#监控列表'
+  ADMIN: &ADMIN
+    []
+  MASTER: &MASTER
+    - '#添加摄像头'
+
+permissions:
+  USER_PERMISSIONS: &USER_PERMISSIONS
+    - *USER
+  ADMIN_PERMISSIONS: &ADMIN_PERMISSIONS
+    - *USER
+    - *ADMIN
+  MASTER_PERMISSIONS: &MASTER_PERMISSIONS
+    - *USER
+    - *ADMIN
+    - *MASTER
+
+authorities:
+  0:
+    0:
+      permission: *USER_PERMISSIONS
+  772150487:
+    715558579:
+      permission: *MASTER_PERMISSIONS
+  973313354:
+    715558579:
+      permission: *MASTER_PERMISSIONS
+    481084539:
+      permission: *ADMIN_PERMISSIONS
+    1332260219:
+      permission: *ADMIN_PERMISSIONS
+    1475464540:
+      permission: *ADMIN_PERMISSIONS
+  917996925: 
+    {}

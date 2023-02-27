@@ -1,12 +1,10 @@
 # monitor_server.py
 import time
-from conf.conf import Conf
-from app.route.monitor_routes import create_monitor_app, destory_monitor_app
-
-CONF_PATH = './conf/conf.yaml'
+from conf.route_info.route_info import RouteInfo
+from app.app import create_monitor_app, destory_monitor_app
 
 if __name__ == '__main__': 
-    Conf._load_config(CONF_PATH)
+    RouteInfo._load_config('conf/route_info/route_info.yaml')
 
     monitor_app = None
     while not monitor_app:
@@ -14,7 +12,7 @@ if __name__ == '__main__':
         if not monitor_app:
             time.sleep(5)
     
-    ip = Conf.get_server_ip()
-    server_port = Conf.get_server_port()
+    ip = RouteInfo.get_server_ip()
+    server_port = RouteInfo.get_server_port()
     monitor_app.run(host=ip, port=server_port)
     destory_monitor_app(monitor_app)

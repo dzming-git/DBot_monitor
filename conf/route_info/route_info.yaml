@@ -2,11 +2,13 @@
 server:
   name: DBot_monitor
   ip: 0.0.0.0
-  port: 5703
+  port: 5704
   tags:
     - DBot
     - DBot_monitor
     - python
+  endpoints:
+    receive_command: receive_command
 
 # 机器人主程序配置
 bot:
@@ -15,3 +17,6 @@ bot:
 # 消息代理配置
 message_broker:
   name: DBot_message_broker
+  endpoints: 
+    upload_commands: server_commands
+    upload_endpoints: server_endpoints

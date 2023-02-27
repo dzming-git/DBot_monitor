@@ -1,17 +1,18 @@
-# monitor_routes.py
-from flask import Flask, request
+# app.py
+from flask import Flask, request, jsonify
 import requests
-from app.message_handler import message_handler
-from app.message_handler.func_dict import func_dict
+from app.func_dict import func_dict
+from api.routes import route_registration
 from api.consul_client import consul_client
-from conf.conf import Conf
+from conf.route_info.route_info import RouteInfo
+from conf.authority.authority import Authority
 
 def register_consul():
     '''
     服务开启前,注册consul
     '''
-    server_name = Conf.get_server_name()
-    port = Conf.get_server_port()
+    server_name = RouteInfo.get_server_name()
+    port = RouteInfo.get_server_port()
     monitor_id = consul_client.register_server(server_name, port, [])
     config = {
             'monitor_id': monitor_id
@@ -67,16 +68,24 @@ def upload_server_commands(app: Flask):
     # 注册支持的指令到主程序
     message_broker_ip = app.config['message_broker_ip']
     message_broker_port = app.config['message_broker_port']
-    server_name = Conf.get_server_name()
+    endpoint = RouteInfo.get_message_broker_endpoint('upload_commands')
+    server_name = RouteInfo.get_server_name()
     commands = list(func_dict.keys())
-    requests.post(f'http://{message_broker_ip}:{message_broker_port}/server_commands', json={'server_name': server_name, 'commands': commands})
+    requests.post(f'http://{message_broker_ip}:{message_broker_port}/{endpoint}', json={'server_name': server_name, 'commands': commands})
 
+def upload_server_endpoints(app: Flask):
+    # 注册支持的endpoint到主程序
+    message_broker_ip = app.config['message_broker_ip']
+    message_broker_port = app.config['message_broker_port']
+    endpoint = RouteInfo.get_message_broker_endpoint('upload_endpoints')
+    server_name = RouteInfo.get_server_name()
+    endpoints_info = RouteInfo.get_server_endpoints_info()
+    requests.post(f'http://{message_broker_ip}:{message_broker_port}/{endpoint}', json={'server_name': server_name, 'endpoints_info': endpoints_info})
 
 def create_monitor_app():
     monitor_app = Flask(__name__)
-
-    bot_config = discover_bot(Conf.get_bot_name())
-    message_broker_config = discover_message_broker(Conf.get_message_broker_name())
+    bot_config = discover_bot(RouteInfo.get_bot_name())
+    message_broker_config = discover_message_broker(RouteInfo.get_message_broker_name())
 
     if bot_config['bot_find'] and message_broker_config['message_broker_find']:
         config = {
@@ -86,6 +95,9 @@ def create_monitor_app():
         }
         monitor_app.config.update(config)
         upload_server_commands(monitor_app)
+        upload_server_endpoints(monitor_app)
+        route_registration(monitor_app)
+
         return monitor_app
 
     return None

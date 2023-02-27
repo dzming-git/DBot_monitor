@@ -1,0 +1,35 @@
+commands:
+  USER: &USER
+    - '#调取监控'
+    - '#监控列表'
+  ADMIN: &ADMIN
+    []
+  MASTER: &MASTER
+    - '#添加摄像头'
+
+permissions:
+  USER_PERMISSIONS: &USER_PERMISSIONS
+    - *USER
+  ADMIN_PERMISSIONS: &ADMIN_PERMISSIONS
+    - *USER
+    - *ADMIN
+  MASTER_PERMISSIONS: &MASTER_PERMISSIONS
+    - *USER
+    - *ADMIN
+    - *MASTER
+
+# 举例 
+# 群号：123456
+# QQ1：123 MASTER
+# QQ2: 234 ADMIN
+# QQ3: 456 USER
+authorities:
+# 下三行代表所有USER权限的用户，勿删
+  0:
+    0:
+      permission: *USER_PERMISSIONS
+  123456:
+    123:
+      permission: *MASTER_PERMISSIONS
+    234:
+      permission: *ADMIN_PERMISSIONS

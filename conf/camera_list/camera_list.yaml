@@ -1,0 +1,63 @@
+path_conf:
+  img_save_dir: ./third_party/go-cqhttp/data/images/monitor
+camera_list:
+  - ip: 192.168.1.16
+    username: admin
+    password: scuimage508
+    location: 508门口
+    hotkeys: ['16', '508门口', '192.168.1.16']
+  - ip: 192.168.1.5
+    username: admin
+    password: scuimage508
+    location: 502楼道口
+    hotkeys: ['5', '502楼道口', '192.168.1.5']
+  - ip: 192.168.1.3
+    username: admin
+    password: scuimage508
+    location: 图像所中间
+    hotkeys: ['3', '图像所中间', '192.168.1.3']
+  - ip: 192.168.1.12
+    username: admin
+    password: scuimage508
+    location: 中间楼梯口
+    hotkeys: ['12', '中间楼梯口', '192.168.1.12']
+  - ip: 192.168.1.8
+    username: admin
+    password: scuimage508
+    location: 右边楼梯
+    hotkeys: ['8', '右边楼梯', '192.168.1.8']
+  - ip: 192.168.1.10
+    username: admin
+    password: scuimage508
+    location: 正对电梯口
+    hotkeys: ['10', '正对电梯口', '192.168.1.10']
+  - ip: 192.168.1.14
+    username: admin
+    password: scuimage508
+    location: 502对着厕所
+    hotkeys: ['14', '502对着厕所', '192.168.1.14']
+  - ip: 192.168.1.7
+    username: admin
+    password: scuimage508
+    location: 对着511
+    hotkeys: ['7', '对着511', '192.168.1.7']
+  - ip: 192.168.1.4
+    username: admin
+    password: scuimage508
+    location: 501-502过道
+    hotkeys: ['4', '501-502过道', '192.168.1.4']
+  - ip: 192.168.1.17
+    username: admin
+    password: scuimage508
+    location: 503-505
+    hotkeys: ['17', '503-505', '192.168.1.17']
+  - ip: 192.168.1.6
+    username: admin
+    password: scuimage508
+    location: 电梯口
+    hotkeys: ['6', '电梯口', '192.168.1.6']
+  - ip: 192.168.1.13
+    username: admin
+    password: scuimage508
+    location: 5楼厕所箱子
+    hotkeys: ['13', '5楼厕所箱子', '192.168.1.13']
