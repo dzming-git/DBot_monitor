@@ -38,7 +38,7 @@ DBot的监控模块服务程序，主程序为[DBot_main](https://github.com/dzm
 
 1. 确保主程序[DBot_main](https://github.com/dzming-git/DBot_main) 正常运行，相关步骤可查询主程序中的运行方法。
 
-2. 运行机器人主程序 `app/monitor_server.py`，例如：
+2. 运行机器人主程序 `app/monitor_server.py`：
 
    ``` python
    python app/monitor_server.py
@@ -46,8 +46,9 @@ DBot的监控模块服务程序，主程序为[DBot_main](https://github.com/dzm
 
 ## 配置文件
 
-- `camera_list.yaml` - 配置文件，包括需要监控的摄像头列表及其相关信息。
-- `authority.yaml` - 配置文件，包括用户权限信息。
+- `conf/camera_list/camera_list.yaml` - 配置文件，包括需要监控的摄像头列表及其相关信息。
+- `con/authority/authority.yaml` - 配置文件，包括用户权限信息。
+- `conf/route_info/route_info.yaml` - 配置文件，包括机器人主程序、消息代理、该服务程序的配置信息。
 
 ## 授权许可
 
