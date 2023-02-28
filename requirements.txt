@@ -1,0 +1,5 @@
+Flask==2.1.2
+numpy==1.22.1
+opencv-python==4.5.4.58
+PyYAML==6.0
+requests==2.26.0
