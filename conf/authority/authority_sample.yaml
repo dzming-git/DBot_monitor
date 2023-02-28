@@ -19,17 +19,22 @@ permissions:
     - *MASTER
 
 # 举例 
-# 群号：123456
-# QQ1：123 MASTER
-# QQ2: 234 ADMIN
-# QQ3: 456 USER
 authorities:
 # 下三行代表所有USER权限的用户，勿删
   0:
     0:
       permission: *USER_PERMISSIONS
+  # 群号：123456
+  # QQ1：123 MASTER
+  # QQ2: 234 ADMIN
+  # QQ3: 456 USER
   123456:
     123:
       permission: *MASTER_PERMISSIONS
     234:
       permission: *ADMIN_PERMISSIONS
+  # 群号：234567
+  # 所有人都是USER权限
+  234567:
+    {}
+  
