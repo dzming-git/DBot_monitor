@@ -96,5 +96,9 @@ class RouteInfo:
         return None
     
     @classmethod
+    def add_message_broker_endpoint(cls, usage, endpoint):
+        cls._message_broker_conf['endpoints'][usage] = endpoint
+    
+    @classmethod
     def get_message_broker_endpoint(cls, usage):
         return cls._message_broker_conf.get('endpoints')[usage]

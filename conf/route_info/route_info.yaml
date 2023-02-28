@@ -18,6 +18,12 @@ bot:
 message_broker:
   name: DBot_message_broker
   endpoints: 
-    upload_commands: service_commands
-    upload_endpoints: service_endpoints
-    service_results: service_results
+  
+    message_broker_endpoints: endpoints  # 与主程序保持一致
+    # 其他endpoint从message_broker_endpoints中获取
+    # app.py
+    service_commands: ''
+    service_endpoints: ''
+
+    # message_sender.py
+    service_results: ''
