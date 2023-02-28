@@ -2,7 +2,7 @@
 import yaml
 
 class RouteInfo:
-    _server_conf = {}
+    _service_conf = {}
     _bot_conf = {}
     _message_broker_conf = {}
 
@@ -10,7 +10,7 @@ class RouteInfo:
     def _load_config(cls, config_path):
         with open(config_path, 'r', encoding='utf-8') as f:
             config = yaml.safe_load(f)
-            cls._server_conf = config.get('server', {})
+            cls._service_conf = config.get('service', {})
             cls._bot_conf = config.get('bot', {})
             cls._bot_conf['find'] = False
             cls._message_broker_conf = config.get('message_broker', {})
@@ -45,28 +45,28 @@ class RouteInfo:
 
     # 服务程序配置方法
     @classmethod
-    def get_server_name(cls):
-        return cls._server_conf.get('name')
+    def get_service_name(cls):
+        return cls._service_conf.get('name')
 
     @classmethod
-    def get_server_ip(cls):
-        return cls._server_conf.get('ip')
+    def get_service_ip(cls):
+        return cls._service_conf.get('ip')
 
     @classmethod
-    def get_server_port(cls):
-        return cls._server_conf.get('port')
+    def get_service_port(cls):
+        return cls._service_conf.get('port')
 
     @classmethod
-    def get_server_tags(cls):
-        return cls._server_conf.get('tags')
+    def get_service_tags(cls):
+        return cls._service_conf.get('tags')
     
     @classmethod
-    def get_server_endpoints_info(cls):
-        return cls._server_conf.get('endpoints')
+    def get_service_endpoints_info(cls):
+        return cls._service_conf.get('endpoints')
     
     @classmethod
-    def get_server_endpoint(cls, usage):
-        return cls._server_conf.get('endpoints')[usage]
+    def get_service_endpoint(cls, usage):
+        return cls._service_conf.get('endpoints')[usage]
 
     # 消息代理配置方法
     @classmethod

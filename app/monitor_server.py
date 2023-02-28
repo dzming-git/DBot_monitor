@@ -1,4 +1,4 @@
-# monitor_server.py
+# monitor_service.py
 import time
 from conf.route_info.route_info import RouteInfo
 from app.app import create_monitor_app, destory_monitor_app
@@ -19,7 +19,7 @@ if __name__ == '__main__':
         if not monitor_app:
             time.sleep(5)
     
-    ip = RouteInfo.get_server_ip()
-    server_port = RouteInfo.get_server_port()
-    monitor_app.run(host=ip, port=server_port)
+    ip = RouteInfo.get_service_ip()
+    service_port = RouteInfo.get_service_port()
+    monitor_app.run(host=ip, port=service_port)
     destory_monitor_app(monitor_app)

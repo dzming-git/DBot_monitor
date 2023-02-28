@@ -1,10 +1,10 @@
 from flask import request
 from conf.route_info.route_info import RouteInfo
 from conf.authority.authority import Authority
-from app.tasks import task
+from utils.tasks import task
 
 def route_registration(app):
-    receive_command_endpoint = RouteInfo.get_server_endpoint('receive_command')
+    receive_command_endpoint = RouteInfo.get_service_endpoint('receive_command')
     @app.route(f'/{receive_command_endpoint}', methods=['POST'])
     def receive_command():
         data = request.get_json()

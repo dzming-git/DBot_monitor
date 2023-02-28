@@ -1,5 +1,5 @@
 # 主程序配置
-server:
+service:
   name: DBot_monitor
   ip: 0.0.0.0
   port: 5704
@@ -18,6 +18,6 @@ bot:
 message_broker:
   name: DBot_message_broker
   endpoints: 
-    upload_commands: server_commands
-    upload_endpoints: server_endpoints
-    server_results: server_results
+    upload_commands: service_commands
+    upload_endpoints: service_endpoints
+    service_results: service_results
