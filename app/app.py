@@ -1,6 +1,7 @@
 # app.py
 from flask import Flask
 import requests
+import time
 from app.services.monitor_service import func_dict
 from api.routes import route_registration
 from conf.route_info.route_info import RouteInfo
@@ -41,20 +42,23 @@ def upload_service_endpoints(app: Flask):
 
 def create_monitor_app():
     monitor_app = Flask(__name__)
-    flag = \
-        discover_bot(RouteInfo.get_bot_name()) and \
-        discover_message_broker(RouteInfo.get_message_broker_name()) and \
-        download_message_broker_endpoints(monitor_app)
-    if flag:
-        config = {
-            **register_consul()
-        }
-        monitor_app.config.update(config)
-        upload_service_commands(monitor_app)
-        upload_service_endpoints(monitor_app)
-        route_registration(monitor_app)
-        return monitor_app
-    return None
+    success_connect = False
+    while not success_connect:
+        success_connect = \
+            discover_bot(RouteInfo.get_bot_name()) and \
+            discover_message_broker(RouteInfo.get_message_broker_name()) and \
+            download_message_broker_endpoints(monitor_app)
+        if not success_connect:
+            print('连接DBot主程序失败，正在重连')
+            time.sleep(1)
+    config = {
+        **register_consul()
+    }
+    monitor_app.config.update(config)
+    upload_service_commands(monitor_app)
+    upload_service_endpoints(monitor_app)
+    route_registration(monitor_app)
+    return monitor_app
 
 def destory_monitor_app(app):
     deregister_service(app)
