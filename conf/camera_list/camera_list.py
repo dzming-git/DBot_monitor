@@ -16,7 +16,7 @@ class CameraList:
         for camera in cls._camera_list:
             if hotkey in camera.get('hotkeys', []):
                 return (camera['ip'], camera['username'], camera['password'])
-        return None
+        return None, None, None
 
     @classmethod
     def get_img_save_dir(cls):
