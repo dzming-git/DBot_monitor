@@ -20,10 +20,13 @@ permissions:
 
 # 举例 
 authorities:
-# QQ1：123 MASTER
-# QQ2：234 ADMIN
-# 0:0代表该配置文件中已配置群（或私人聊天）但没有配置的人员的权限，即默认权限
-# 0:qid代表私人聊天权限
+  # 全局权限，其他位置不再需要配置
+  -1: 
+    666: permission: *MASTER_PERMISSIONS
+  # QQ1：123 MASTER
+  # QQ2：234 ADMIN
+  # 0:0代表该配置文件中已配置群（或私人聊天）但没有配置的人员的权限，即默认权限
+  # 0:qid代表私人聊天权限
   0:
     0:
       permission: *USER_PERMISSIONS

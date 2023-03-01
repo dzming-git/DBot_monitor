@@ -36,10 +36,18 @@ class Authority:
         # 如果该群不在配置文件中，不响应
         if cls._authorities.get(group_id, None) is None:
             return None
-        try:
-            return cls._authorities[group_id][qq_id]['permission']
-        except KeyError:
+        # 全局权限
+        global_permission = cls._authorities[-1].get(qq_id, None)['permission']
+        if global_permission is not None:
+            return global_permission
+        
+        permission = cls._authorities[group_id].get(qq_id, None)['permission']
+        # 默认权限
+        if permission is None:
             return cls._authorities[0][0]['permission']
+        # 已配置权限
+        else:
+            return permission
 
     @classmethod
     def check_command_permission(cls, command, group_id, qq_id):
