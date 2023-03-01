@@ -39,7 +39,9 @@ DBot的监控模块服务程序，主程序为[DBot_main](https://github.com/dzm
 1. 确保主程序[DBot_main](https://github.com/dzming-git/DBot_main) 正常运行，相关步骤可查询主程序中的运行方法。
 
 2. 运行监控服务程序 `app/monitor_server.py`：
+
    **注意 项目的工作目录必须是根目录**
+
    ``` python
    python  -m app.monitor_server run
    ```
