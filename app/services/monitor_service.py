@@ -7,6 +7,7 @@ from conf.camera_list.camera_list import CameraList
 
 def send_current_camera_image(gid=None, qid=None, msg_list=[]):
     message_send = ''
+    at = False
     hotkey = msg_list[0]
     # 海康威视摄像头信息
     ip_address, username, password = CameraList.get_camera_by_hotkey(hotkey)
@@ -39,8 +40,8 @@ def send_current_camera_image(gid=None, qid=None, msg_list=[]):
                 os.makedirs(save_dir)
 
             # 获取当前时间，并将其格式化为指定字符串格式
-            time_str = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-            filename = f"{time_str}.jpg"
+            time_str_save = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+            filename = f"{time_str_save}.jpg"
             filepath = f"{save_dir}/{filename}"
             if not os.path.exists(save_dir):
                 os.mkdir(save_dir)
@@ -58,15 +59,18 @@ def send_current_camera_image(gid=None, qid=None, msg_list=[]):
                     compressed = True
                 else:
                     quality -= 5
-            message_send = f"[CQ:image,file=monitor/{qid}_{gid}/{filename}]"  
+            location = CameraList.get_location_by_hotkey(hotkey)
+            time_str_send = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            message_send = f"监控 {ip_address}\n位置 {location}\n时间 {time_str_send}\n[CQ:image,file=monitor/{qid}_{gid}/{filename}]"  
         else:
             print("Failed to connect to camera")
             message_send = "Failed to connect to camera"
+            at = True
     else:
         message_send = "无效热键"
-    return message_send, False
-    # msg_struct = Msg_struct(gid=gid, qid=qid, at=False, msg=message_send)
-    # send_message(msg_struct)
+        at = True
+    return message_send, at
+
 
 def send_camera_list(gid=None, qid=None, msg_list=[]):
     message_send = ''
@@ -74,11 +78,17 @@ def send_camera_list(gid=None, qid=None, msg_list=[]):
         message_send += f"IP地址 {camera['ip']}\n位置 {camera['location']}\n\n"
     return message_send, False
 
-    # msg_struct = Msg_struct(gid=gid, qid=qid, at=False, msg=message_send)
-    # send_message(msg_struct)
+def add_camera(gid=None, qid=None, msg_list=[]):
+    message_send = ''
+    if len(msg_list) != 3:
+        message_send = '参数数量错误'
+        return message_send, True
+    ip, user, password = msg_list
+
 
 
 func_dict = {
     '#调取监控': lambda gid=None, qid=None, msg_list=[]: send_current_camera_image(gid, qid, msg_list),
-    '#监控列表': lambda gid=None, qid=None, msg_list=[]: send_camera_list(gid, qid, msg_list)
+    '#监控列表': lambda gid=None, qid=None, msg_list=[]: send_camera_list(gid, qid, msg_list),
+    '#添加监控': lambda gid=None, qid=None, msg_list=[]: send_camera_list(gid, qid, msg_list)
 }

@@ -19,5 +19,12 @@ class CameraList:
         return None, None, None
 
     @classmethod
+    def get_location_by_hotkey(cls, hotkey):
+        for camera in cls._camera_list:
+            if hotkey in camera.get('hotkeys', []):
+                return camera['location']
+        return None
+
+    @classmethod
     def get_img_save_dir(cls):
         return cls._img_save_dir
