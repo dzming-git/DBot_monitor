@@ -34,14 +34,14 @@ class Authority:
         if group_id == None:
             group_id = 0
         # 如果该群不在配置文件中，不响应
-        if cls._authorities.get(group_id, None) is None:
+        if group_id not in cls._authorities:
             return None
         # 全局权限
-        global_permission = cls._authorities[-1].get(qq_id, None)['permission']
+        global_permission = cls._authorities[-1].get(qq_id, {})['permission']
         if global_permission is not None:
             return global_permission
-        
-        permission = cls._authorities[group_id].get(qq_id, None)['permission']
+        # 获取该 QQ 号在该群组中的权限
+        permission = cls._authorities[group_id].get(qq_id, {})['permission']
         # 默认权限
         if permission is None:
             return cls._authorities[0][0]['permission']
