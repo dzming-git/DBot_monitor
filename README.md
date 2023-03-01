@@ -20,7 +20,7 @@ DBot的监控模块服务程序，主程序为[DBot_main](https://github.com/dzm
 
 ### 安装
 
-1. 确保已经安装了 Python 3.x 和 DBot微服务的主程序[DBot_main](https://github.com/dzming-git/DBot_main) 。
+1. 安装DBot微服务的主程序[DBot_main](https://github.com/dzming-git/DBot_main) 。
 
 2. 下载代码到本地的`DBot_monitor`目录。
 
@@ -38,11 +38,13 @@ DBot的监控模块服务程序，主程序为[DBot_main](https://github.com/dzm
 
 1. 确保主程序[DBot_main](https://github.com/dzming-git/DBot_main) 正常运行，相关步骤可查询主程序中的运行方法。
 
-2. 运行机器人主程序 `app/monitor_server.py`：
-
+2. 运行监控服务程序 `app/monitor_server.py`：
+   **注意 项目的工作目录必须是根目录**
    ``` python
-   python app/monitor_server.py
+   python  -m app.monitor_server run
    ```
+   或者
+   配置`run.bat`文件中运行该程序的python地址后，双击打开`run.bat`
 
 ## 配置文件
 
