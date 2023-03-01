@@ -31,7 +31,10 @@ class Authority:
     def get_permission(cls, group_id, qq_id):
         if not cls._authorities:
             cls._load_config(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'authority.yaml'))
-        if group_id not in list(cls._authorities.keys()):
+        if group_id == None:
+            group_id = 0
+        # 如果该群不在配置文件中，不响应
+        if cls._authorities.get(group_id, None) is None:
             return None
         try:
             return cls._authorities[group_id][qq_id]['permission']
