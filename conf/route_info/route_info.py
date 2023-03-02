@@ -1,7 +1,9 @@
 # route_info.yaml
 import yaml
+from utils.watch_config import watch_config
 
 class RouteInfo:
+    _config_path = ''
     _service_conf = {}
     _api_gateway_conf = {
         'find': False
@@ -11,12 +13,20 @@ class RouteInfo:
     }
 
     @classmethod
-    def load_config(cls, config_path):
+    def load_config(cls, config_path, reload_flag=False):
         with open(config_path, 'r', encoding='utf-8') as f:
             config = yaml.safe_load(f)
             cls._service_conf = config.get('service', {})
             cls._api_gateway_conf = config.get('api_gateway', {})
             cls._message_broker_conf = config.get('message_broker', {})
+            if not reload_flag:
+                cls._config_path = config_path
+                watch_config(config_path, cls.reload_config)
+
+    @classmethod
+    def reload_config(cls):
+        cls.load_config(config_path=cls._config_path, reload_flag=True)
+
 
     # 机器人API网关配置方法
     @classmethod

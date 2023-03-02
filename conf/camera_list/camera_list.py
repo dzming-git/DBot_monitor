@@ -1,4 +1,5 @@
 import ruamel.yaml
+from utils.watch_config import watch_config
 
 class CameraList:
     _config_path = ''
@@ -6,12 +7,18 @@ class CameraList:
     _img_save_dir = ""
 
     @classmethod
-    def load_config(cls, config_path):
+    def load_config(cls, config_path, reload_flag=False):
         with open(config_path, 'r', encoding='utf-8') as f:
             data = ruamel.yaml.load(f, Loader=ruamel.yaml.RoundTripLoader)
             cls._camera_list = data['camera_list']
             cls._img_save_dir = data['path_conf']['img_save_dir']
-            cls._config_path = config_path
+            if not reload_flag:
+                cls._config_path = config_path
+                watch_config(config_path, cls.reload_config)
+    
+    @classmethod
+    def reload_config(cls):
+        cls.load_config(config_path=cls._config_path, reload_flag=True)
     
     @classmethod
     def save_config(cls):

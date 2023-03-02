@@ -1,11 +1,13 @@
 import yaml
 import os
+from utils.watch_config import watch_config
 
 class Authority:
+    _config_path = ''
     _authorities = {}
 
     @classmethod
-    def load_config(cls, config_path):
+    def load_config(cls, config_path, reload_flag=False):
         def flatten_list(nested_list):
             """
             将嵌套列表展开成一个列表
@@ -26,6 +28,14 @@ class Authority:
                     for perm_list in qq_permissions['permission']:
                         permissions.extend(flatten_list(perm_list))
                     qq_permissions['permission'] = permissions
+            if not reload_flag:
+                cls._config_path = config_path
+                watch_config(config_path, cls.reload_config)
+
+    @classmethod
+    def reload_config(cls):
+        cls.load_config(config_path=cls._config_path, reload_flag=True)
+
 
     @classmethod
     def get_permission(cls, group_id, qq_id):
