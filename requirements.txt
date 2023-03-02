@@ -4,3 +4,4 @@ opencv-python
 PyYAML
 request
 python-consul
+ruamel.yaml
