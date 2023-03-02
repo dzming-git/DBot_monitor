@@ -1,6 +1,6 @@
 # DBot_monitor
 
-DBot的监控模块服务程序，主程序为[DBot_main](https://github.com/dzming-git/DBot_main) 。
+DBot的监控模块服务程序。
 
 ## 功能说明
 
@@ -20,7 +20,7 @@ DBot的监控模块服务程序，主程序为[DBot_main](https://github.com/dzm
 
 ### 安装
 
-1. 安装DBot微服务的主程序[DBot_main](https://github.com/dzming-git/DBot_main) 。
+1. 安装DBot微服务的平台程序 [DBot_platform](https://github.com/dzming-git/DBot_platform) 。
 
 2. 下载代码到本地的`DBot_monitor`目录。
 
@@ -36,7 +36,7 @@ DBot的监控模块服务程序，主程序为[DBot_main](https://github.com/dzm
 
 ### 运行
 
-1. 确保主程序 [DBot_main](https://github.com/dzming-git/DBot_main) 正常运行，相关步骤可查询主程序中的运行方法。
+1. 确保平台程序 [DBot_platform](https://github.com/dzming-git/DBot_platform)  正常运行，相关步骤可查询平台程序中的运行方法。
 
 2. 运行监控服务程序 `app/monitor_server.py`：
 
@@ -53,7 +53,7 @@ DBot的监控模块服务程序，主程序为[DBot_main](https://github.com/dzm
 
 - `conf/camera_list/camera_list.yaml` - 配置文件，包括需要监控的摄像头列表及其相关信息。
 - `con/authority/authority.yaml` - 配置文件，包括用户权限信息。
-- `conf/route_info/route_info.yaml` - 配置文件，包括机器人主程序、消息代理、该服务程序的配置信息。
+- `conf/route_info/route_info.yaml` - 配置文件，包括机器人API网关、消息代理、该服务程序的配置信息。
 
 ## 授权许可
 

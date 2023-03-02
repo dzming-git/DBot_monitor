@@ -20,26 +20,26 @@ def deregister_service(app):
     monitor_id = app.config['monitor_id']
     consul_client.deregister_service(monitor_id)
 
-def discover_bot(service_name):
+def discover_api_gateway(service_name):
     """
-    发现机器人主程序
+    发现机器人API网关
     """
     services = consul_client.discover_services(service_name)
     if services:
-        bot = services[0]
-        RouteInfo.update_bot(ip=bot[0], port=bot[1])
+        api_gateway = services[0]
+        RouteInfo.update_api_gateway(ip=api_gateway[0], port=api_gateway[1])
         return True
-    print('主程序未开启')
+    print('API网关未开启')
     return False
         
 def discover_message_broker(service_name):
     """
-    发现机器人主程序
+    发现机器人消息代理
     """
     services = consul_client.discover_services(service_name)
     if services:
         message_broker = services[0]
         RouteInfo.update_message_broker(ip=message_broker[0], port=message_broker[1])
         return True
-    print('消息代理开启')
+    print('消息代理未开启')
     return False

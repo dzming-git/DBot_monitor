@@ -5,10 +5,10 @@ import time
 from app.services.monitor_service import func_dict
 from api.routes import route_registration
 from conf.route_info.route_info import RouteInfo
-from utils.service_discovery.consul_utils import register_consul, discover_bot, discover_message_broker, deregister_service
+from utils.service_discovery.consul_utils import register_consul, discover_api_gateway, discover_message_broker, deregister_service
 
 def download_message_broker_endpoints(app: Flask):
-    # 下载消息代理的endpoint到主程序
+    # 下载消息代理的endpoint
     message_broker_ip = RouteInfo.get_message_broker_ip()
     message_broker_port = RouteInfo.get_message_broker_port()
     endpoint = RouteInfo.get_message_broker_endpoint('message_broker_endpoints')
@@ -23,7 +23,7 @@ def download_message_broker_endpoints(app: Flask):
         return False
 
 def upload_service_commands(app: Flask):
-    # 注册支持的指令到主程序
+    # 注册支持的指令到消息代理程序
     message_broker_ip = RouteInfo.get_message_broker_ip()
     message_broker_port = RouteInfo.get_message_broker_port()
     endpoint = RouteInfo.get_message_broker_endpoint('service_commands')
@@ -32,7 +32,7 @@ def upload_service_commands(app: Flask):
     requests.post(f'http://{message_broker_ip}:{message_broker_port}/{endpoint}', json={'service_name': service_name, 'commands': commands})
 
 def upload_service_endpoints(app: Flask):
-    # 注册支持的endpoint到主程序
+    # 注册支持的endpoint到消息代理程序
     message_broker_ip = RouteInfo.get_message_broker_ip()
     message_broker_port = RouteInfo.get_message_broker_port()
     endpoint = RouteInfo.get_message_broker_endpoint('service_endpoints')
@@ -45,11 +45,11 @@ def create_monitor_app():
     success_connect = False
     while not success_connect:
         success_connect = \
-            discover_bot(RouteInfo.get_bot_name()) and \
+            discover_api_gateway(RouteInfo.get_api_gateway_name()) and \
             discover_message_broker(RouteInfo.get_message_broker_name()) and \
             download_message_broker_endpoints(monitor_app)
         if not success_connect:
-            print('连接DBot主程序失败，正在重连')
+            print('连接DBot平台程序失败，正在重连')
             time.sleep(1)
     config = {
         **register_consul()
