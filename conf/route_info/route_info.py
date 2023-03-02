@@ -11,7 +11,7 @@ class RouteInfo:
     }
 
     @classmethod
-    def _load_config(cls, config_path):
+    def load_config(cls, config_path):
         with open(config_path, 'r', encoding='utf-8') as f:
             config = yaml.safe_load(f)
             cls._service_conf = config.get('service', {})

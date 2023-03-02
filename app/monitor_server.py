@@ -6,9 +6,9 @@ from conf.authority.authority import Authority
 from conf.camera_list.camera_list import CameraList
 
 def load_conf():
-    Authority._load_config('conf/authority/authority.yaml')
-    CameraList._load_config('conf/camera_list/camera_list.yaml')
-    RouteInfo._load_config('conf/route_info/route_info.yaml')
+    Authority.load_config('conf/authority/authority.yaml')
+    CameraList.load_config('conf/camera_list/camera_list.yaml')
+    RouteInfo.load_config('conf/route_info/route_info.yaml')
 
 if __name__ == '__main__': 
     load_conf()

@@ -5,7 +5,7 @@ class Authority:
     _authorities = {}
 
     @classmethod
-    def _load_config(cls, config_path):
+    def load_config(cls, config_path):
         def flatten_list(nested_list):
             """
             将嵌套列表展开成一个列表
@@ -30,7 +30,7 @@ class Authority:
     @classmethod
     def get_permission(cls, group_id, qq_id):
         if not cls._authorities:
-            cls._load_config(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'authority.yaml'))
+            cls.load_config(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'authority.yaml'))
         if group_id == None:
             group_id = 0
         # 如果该群不在配置文件中，不响应
