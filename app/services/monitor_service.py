@@ -82,13 +82,30 @@ def add_camera(gid=None, qid=None, msg_list=[]):
     message_send = ''
     if len(msg_list) != 3:
         message_send = '参数数量错误'
-        return message_send, True
-    ip, user, password = msg_list
+    else:
+        ip_address , username, password = msg_list
+        ip_list = CameraList.get_camera_ip_list()
+        if ip_address in ip_list:
+            message_send = '该摄像头已存在'
+        else:
+            url = f"http://{ip_address }/ISAPI/System/deviceInfo"
+            try:
+                response = requests.get(url, auth=(username, password))
+                if response.status_code != 200:
+                    message_send = '验证失败'
+                else:
+                    CameraList.add_camera(ip_address , username, password)
+                message_send = '添加成功'
+            except:
+                message_send = '验证失败'
+
+    return message_send, True
+
 
 
 
 func_dict = {
     '#调取监控': lambda gid=None, qid=None, msg_list=[]: send_current_camera_image(gid, qid, msg_list),
     '#监控列表': lambda gid=None, qid=None, msg_list=[]: send_camera_list(gid, qid, msg_list),
-    '#添加监控': lambda gid=None, qid=None, msg_list=[]: send_camera_list(gid, qid, msg_list)
+    '#添加监控': lambda gid=None, qid=None, msg_list=[]: add_camera(gid, qid, msg_list)
 }
