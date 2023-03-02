@@ -3,8 +3,12 @@ import yaml
 
 class RouteInfo:
     _service_conf = {}
-    _api_gateway_conf = {}
-    _message_broker_conf = {}
+    _api_gateway_conf = {
+        'find': False
+    }
+    _message_broker_conf = {
+        'find': False
+    }
 
     @classmethod
     def _load_config(cls, config_path):
@@ -12,9 +16,7 @@ class RouteInfo:
             config = yaml.safe_load(f)
             cls._service_conf = config.get('service', {})
             cls._api_gateway_conf = config.get('api_gateway', {})
-            cls._api_gateway_conf['find'] = False
             cls._message_broker_conf = config.get('message_broker', {})
-            cls._message_broker_conf['find'] = False
 
     # 机器人API网关配置方法
     @classmethod
@@ -102,3 +104,7 @@ class RouteInfo:
     @classmethod
     def get_message_broker_endpoint(cls, usage):
         return cls._message_broker_conf.get('endpoints')[usage]
+    
+    @classmethod
+    def get_message_broker_consul_key(cls, usage):
+        return cls._message_broker_conf.get('consul_key')[usage]
