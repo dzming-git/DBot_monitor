@@ -1,9 +1,9 @@
 # monitor_service.py
 import time
 from conf.route_info.route_info import RouteInfo
-from app.app import create_monitor_app, destory_monitor_app
 from conf.authority.authority import Authority
 from conf.camera_list.camera_list import CameraList
+from app.app import monitor_server_thread
 
 def load_conf():
     Authority.load_config('conf/authority/authority.yaml')
@@ -13,13 +13,7 @@ def load_conf():
 if __name__ == '__main__': 
     load_conf()
 
-    monitor_app = None
-    while not monitor_app:
-        monitor_app = create_monitor_app()
-        if not monitor_app:
-            time.sleep(5)
-    
-    ip = RouteInfo.get_service_ip()
-    service_port = RouteInfo.get_service_port()
-    monitor_app.run(host=ip, port=service_port)
-    destory_monitor_app(monitor_app)
+    monitor_server_thread.init()
+    monitor_server_thread.start()
+    while True:
+        time.sleep(10)
