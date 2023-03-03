@@ -19,12 +19,3 @@ message_broker:
   name: DBot_message_broker
   consul_key:
     message_broker_endpoints: message_broker_endpoints  # 与平台程序(https://github.com/dzming-git/DBot_platform)保持一致
-  endpoints: 
-    
-    # 其他endpoint从message_broker_endpoints中获取
-    # app.py
-    service_commands: ''
-    service_endpoints: ''
-
-    # message_sender.py
-    service_results: ''
