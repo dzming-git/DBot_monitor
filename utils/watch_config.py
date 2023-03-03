@@ -17,7 +17,7 @@ class ConfigFileHandler(FileSystemEventHandler):
             time_interval = current_time - self.last_modified_time
             self.last_modified_time = current_time
             # VSCode编辑文本时会连续保存多次
-            if time_interval < 0.01:
+            if time_interval < 0.5:
                 return
             else:
                 self.reload_func()
