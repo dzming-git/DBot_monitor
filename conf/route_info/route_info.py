@@ -2,7 +2,7 @@
 import yaml
 from utils.watch_config import watch_config
 import copy
-from utils.compare_dict import compare_dicts
+from utils.compare_dicts import compare_dicts
 
 class RouteInfo:
     _config_path = ''
