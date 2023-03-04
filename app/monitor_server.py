@@ -12,7 +12,6 @@ def load_conf():
 
 if __name__ == '__main__': 
     load_conf()
-
     monitor_server_thread.init()
     monitor_server_thread.start()
     while True:

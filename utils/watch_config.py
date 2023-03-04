@@ -38,4 +38,3 @@ def watch_config(config_path, reload_func):
     t = threading.Thread(target=watch_config_thread, args=(config_path, reload_func,))
     t.start()
     return t
-
