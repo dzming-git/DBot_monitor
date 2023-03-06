@@ -51,7 +51,7 @@ def send_current_camera_image(gid=None, qid=None, msg_list=[]):
                 # 获取当前时间，并将其格式化为指定字符串格式
                 time_now =  datetime.now()
                 time_str_save = time_now.strftime("%Y-%m-%d-%H-%M-%S")
-                filename = f"{time_str_save}.jpg"
+                filename = f"{ip_address}_{time_str_save}.jpg"
                 filepath = f"{save_dir}/{filename}"
                 if not os.path.exists(save_dir):
                     os.mkdir(save_dir)
