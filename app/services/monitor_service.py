@@ -7,8 +7,9 @@ from conf.camera_list.camera_list import CameraList
 from collections import OrderedDict
 
 def send_current_camera_image(gid=None, qid=None, msg_list=[]):
-    message_send = '\n'  # 避免和@xxx在同一行
-    at = True
+    message_send = ''
+    if gid:
+        message_send = f'[CQ:at,qq={qid}]\n'
     hotkeys = msg_list
     cameras = []
     for hotkey in hotkeys:
@@ -77,17 +78,21 @@ def send_current_camera_image(gid=None, qid=None, msg_list=[]):
                 message_send += "Failed to connect to camera\n\n"
         else:
             message_send += "无效热键\n\n"
-    return message_send.rstrip('\n'), at
+    return message_send.rstrip('\n')
 
 
 def send_camera_list(gid=None, qid=None, msg_list=[]):
     message_send = ''
+    if gid:
+        message_send = f'[CQ:at,qq={qid}]\n'
     for camera in CameraList._camera_list:
         message_send += f"IP地址 {camera['ip']}\n位置 {camera['location']}\n\n"
-    return message_send.rstrip('\n'), False
+    return message_send.rstrip('\n')
 
 def add_camera(gid=None, qid=None, msg_list=[]):
     message_send = ''
+    if gid:
+        message_send = f'[CQ:at,qq={qid}]\n'
     if len(msg_list) != 3:
         message_send = '参数数量错误'
     else:
@@ -106,7 +111,7 @@ def add_camera(gid=None, qid=None, msg_list=[]):
                 message_send = '添加成功'
             except:
                 message_send = '验证失败'
-    return message_send, True
+    return message_send
 
 
 

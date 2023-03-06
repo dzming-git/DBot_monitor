@@ -24,8 +24,8 @@ class TaskThread(threading.Thread):
         gid = task['gid']
         qid = task['qid']
         args = task['args']
-        message, at = func_dict[command](gid=gid, qid=qid, msg_list=args)
-        send_result_message_to_message_broker(message=message, gid=gid, qid=qid, at=at)
+        message = func_dict[command](gid=gid, qid=qid, msg_list=args)
+        send_result_message_to_message_broker(message=message, gid=gid, qid=qid)
 
     def run(self):
         while not self._stop:
