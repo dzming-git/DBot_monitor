@@ -42,6 +42,9 @@ def upload_service_endpoints():
     requests.post(f'http://{message_broker_ip}:{message_broker_port}/{endpoint}', json={'service_name': service_name, 'endpoints_info': endpoints_info})
 
 class MonitorServerThread(threading.Thread):
+    def __init__(self):
+        super().__init__(name='MonitorServerThread')
+
     def init(self):
         self._server_name = 'DBot_monitor'
         self._app = Flask(__name__)
