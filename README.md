@@ -45,7 +45,7 @@ DBot的监控模块服务程序。
    **注意 项目的工作目录必须是根目录**
 
    ``` python
-   python  -m app.monitor_server
+   python -m app.monitor_server
    ```
    或者
    
