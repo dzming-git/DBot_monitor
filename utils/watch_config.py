@@ -23,18 +23,24 @@ class ConfigFileHandler(FileSystemEventHandler):
                 self.reload_func()
                 print(f'配置文件{self.config_path}被修改，重新加载')
 
-def watch_config(config_path, reload_func):
-    def watch_config_thread(config_path, reload_func):
-        event_handler = ConfigFileHandler(config_path, reload_func)
+class WatchDogThread(threading.Thread):
+    def __init__(self, config_path, reload_func):
+        self.config_path = config_path
+        self.reload_func = reload_func
+        self._stop = False
+        config_name = os.path.basename(config_path)
+        super().__init__(name=f'WatchDog_{config_name}')
+    
+    def run(self):
+        event_handler = ConfigFileHandler(self.config_path, self.reload_func)
         observer = Observer()
         observer.schedule(event_handler, '.', recursive=True)
         observer.start()
-        try:
-            while True:
-                time.sleep(1)
-        except KeyboardInterrupt:
-            observer.stop()
+        while not self._stop:
+            time.sleep(1)
+        observer.stop()
         observer.join()
-    t = threading.Thread(target=watch_config_thread, args=(config_path, reload_func,))
-    t.start()
-    return t
+    
+    def stop(self):
+        self._stop = True
+

@@ -1,8 +1,9 @@
 import ruamel.yaml
-from utils.watch_config import watch_config
+from utils.watch_config import WatchDogThread
 
 class CameraList:
     _config_path = ''
+    _watch_dog = None
     _camera_list = {}
     _img_save_dir = ""
 
@@ -14,7 +15,8 @@ class CameraList:
             cls._img_save_dir = data['path_conf']['img_save_dir']
             if not reload_flag:
                 cls._config_path = config_path
-                watch_config(config_path, cls.reload_config)
+                cls._watch_dog = WatchDogThread(config_path, cls.reload_config)
+                cls._watch_dog.start()
     
     @classmethod
     def reload_config(cls):

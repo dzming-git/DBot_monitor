@@ -1,9 +1,10 @@
 import yaml
 import os
-from utils.watch_config import watch_config
+from utils.watch_config import WatchDogThread
 
 class Authority:
     _config_path = ''
+    _watch_dog = None
     _authorities = {}
 
     @classmethod
@@ -30,7 +31,8 @@ class Authority:
                     qq_permissions['permission'] = permissions
             if not reload_flag:
                 cls._config_path = config_path
-                watch_config(config_path, cls.reload_config)
+                cls._watch_dog = WatchDogThread(config_path, cls.reload_config)
+                cls._watch_dog.start()
 
     @classmethod
     def reload_config(cls):
