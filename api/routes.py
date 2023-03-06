@@ -1,7 +1,7 @@
 from flask import request
 from conf.route_info.route_info import RouteInfo
 from conf.authority.authority import Authority
-from utils.tasks import task
+from utils.tasks import task_thread
 
 def route_registration(app):
     receive_command_endpoint = RouteInfo.get_service_endpoint('receive_command')
@@ -13,7 +13,7 @@ def route_registration(app):
         gid = data['gid']
         qid = data['qid']
         permission = Authority.check_command_permission(command=command, group_id=gid, qq_id=qid)
-        task.add_task(command=command, args=args, gid=gid, qid=qid)
+        task_thread.add_task(command=command, args=args, gid=gid, qid=qid)
         return {'permission': permission}
     
     @app.route('/health')
