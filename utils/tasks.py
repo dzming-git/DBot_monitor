@@ -19,15 +19,21 @@ class TaskThread(threading.Thread):
             'qid': qid
         })
     
+    def exe_task(self, task):
+        command = task['command']
+        gid = task['gid']
+        qid = task['qid']
+        args = task['args']
+        message, at = func_dict[command](gid=gid, qid=qid, msg_list=args)
+        send_result_message_to_message_broker(message=message, gid=gid, qid=qid, at=at)
+
     def run(self):
         while not self._stop:
             task = self._task_queue.get(block=True)
             command = task['command']
-            gid = task['gid']
-            qid = task['qid']
-            args = task['args']
-            message, at = func_dict[command](gid=gid, qid=qid, msg_list=args)
-            send_result_message_to_message_broker(message=message, gid=gid, qid=qid, at=at)
+            single_task_thread = threading.Thread(target=self.exe_task, args=(task, ), name=f'ExeTask:{command}')
+            single_task_thread.start()
+            
     
     def stop(self):
         self._stop = False
