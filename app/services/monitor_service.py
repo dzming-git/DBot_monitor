@@ -7,9 +7,9 @@ from conf.camera_list.camera_list import CameraList
 from collections import OrderedDict
 
 def send_current_camera_image(gid=None, qid=None, msg_list=[]):
-    message_send = ''
+    message_parts = []
     if gid:
-        message_send = f'[CQ:at,qq={qid}]\n'
+        message_parts.append(f'[CQ:at,qq={qid}]\n')
     hotkeys = msg_list
     cameras = []
     for hotkey in hotkeys:
@@ -18,31 +18,25 @@ def send_current_camera_image(gid=None, qid=None, msg_list=[]):
         cameras.append((ip_address, username, password, hotkey))
     # 去除重复摄像头
     cameras = list(OrderedDict.fromkeys(cameras))
+    
     for ip_address, username, password, hotkey in cameras:
-        message_send += f'热键 {hotkey}\n'
+        message_parts.append(f'热键 {hotkey}')
         if ip_address is None:
-            message_send += "无效热键\n\n"
+            message_parts.append('无效热键\n')
             continue
-        message_send += f'监控 {ip_address}\n'
+        message_parts.append(f'监控 {ip_address}')
         # 请求登录
         login_url = f"http://{ip_address}/ISAPI/Streaming/channels/101/picture"
         try:
-            response = requests.get(login_url, auth=(username, password), stream=True)
+            response = requests.get(login_url, auth=(username, password), stream=True, timeout=1)
         except:
-            message_send += "无法连接\n\n"
+            message_parts.append('无法连接\n')
             print("无法连接")
             continue
-        if response.status_code == 401:
-            message_send += "验证失败 401\n\n"
-            print("验证失败")
-            continue
-        elif response.status_code != 200:
-            message_send += "无法连接\n\n"
-            print("无法连接")
+        if response.status_code != 200:
+            message_parts.append(f'验证失败 {response.status_code}\n')
             continue
         else:
-            print("验证成功")
-
             # 读取数据并解码JPEG图像
             data = b""
             for chunk in response.iter_content(chunk_size=1024):
@@ -76,7 +70,6 @@ def send_current_camera_image(gid=None, qid=None, msg_list=[]):
                 _, buffer = cv2.imencode(".jpg", frame, encode_param)
                 size = len(buffer)
                 if size < 1e6:
-
                     with open(filepath, "wb") as f:
                         f.write(buffer)
                     compressed = True
@@ -84,40 +77,43 @@ def send_current_camera_image(gid=None, qid=None, msg_list=[]):
                     quality -= 5
             location = CameraList.get_location_by_hotkey(hotkey)
             time_str_send = time_now.strftime("%Y-%m-%d %H:%M:%S")
-            message_send += f"位置 {location}\n时间 {time_str_send}\n[CQ:image,file=monitor/{qid}_{gid}/{filename}]\n\n"  
-    return message_send.rstrip('\n')
+            message_parts.append(f"位置 {location}\n时间 {time_str_send}\n[CQ:image,file=monitor/{qid}_{gid}/{filename}]\n")
+    message_send = '\n'.join(message_parts).rstrip('\n')
+    return message_send
 
 
 def send_camera_list(gid=None, qid=None, msg_list=[]):
-    message_send = ''
+    message_parts = []
     if gid:
-        message_send = f'[CQ:at,qq={qid}]\n'
+        message_parts.append(f'[CQ:at,qq={qid}]')
     for camera in CameraList._camera_list:
-        message_send += f"IP地址 {camera['ip']}\n位置 {camera['location']}\n\n"
-    return message_send.rstrip('\n')
+        message_parts.append(f"IP地址 {camera['ip']}\n位置 {camera['location']}\n")
+    message_send = '\n'.join(message_parts).rstrip('\n')
+    return message_send
 
 def add_camera(gid=None, qid=None, msg_list=[]):
-    message_send = ''
+    message_parts = []
     if gid:
-        message_send = f'[CQ:at,qq={qid}]\n'
+        message_parts.append(f'[CQ:at,qq={qid}]')
     if len(msg_list) != 3:
-        message_send = '参数数量错误'
+        message_parts.append('参数数量错误')
     else:
         ip_address , username, password = msg_list
         ip_list = CameraList.get_camera_ip_list()
         if ip_address in ip_list:
-            message_send = '该摄像头已存在'
+            message_parts.append('该摄像头已存在')
         else:
             url = f"http://{ip_address }/ISAPI/System/deviceInfo"
             try:
-                response = requests.get(url, auth=(username, password))
+                response = requests.get(url, auth=(username, password), timeout=1)
                 if response.status_code != 200:
-                    message_send = '验证失败'
+                    message_parts.append('验证失败')
                 else:
                     CameraList.add_camera(ip_address , username, password)
-                message_send = '添加成功'
+                message_parts.append('添加成功')
             except:
-                message_send = '验证失败'
+                message_parts.append('无法连接')
+    message_send = '\n'.join(message_parts).rstrip('\n')
     return message_send
 
 def set_hotkey(gid=None, qid=None, msg_list=[]):
