@@ -24,6 +24,8 @@ DBot的监控模块服务程序。
 
 1. 安装DBot微服务的平台程序 [DBot_platform](https://github.com/dzming-git/DBot_platform) 。
 
+1. 安装DBot微服务的SDK [DBot_SDK](https://github.com/dzming-git/DBot_SDK)
+
 2. 下载代码到本地的`DBot_monitor`目录。
 
 3. 将`conf/authority`文件夹中`authority_sample.yaml`重命名为 `authority.yaml` ，配置用户权限。未来将增加通过指令进行编辑的功能。
@@ -40,12 +42,12 @@ DBot的监控模块服务程序。
 
 1. 确保平台程序 [DBot_platform](https://github.com/dzming-git/DBot_platform)  正常运行，相关步骤可查询平台程序中的运行方法。
 
-2. 运行监控服务程序 `app/monitor_server.py`：
+2. 运行监控服务程序 `app/server.py`：
 
    **注意 项目的工作目录必须是根目录**
 
    ``` python
-   python -m app.monitor_server
+   python -m app.server
    ```
    或者
    
