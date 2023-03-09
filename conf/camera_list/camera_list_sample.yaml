@@ -1,7 +1,8 @@
 path_conf:
-  img_save_dir: ./third_party/go-cqhttp/data/images/monitor
+  # 目前必须设置在 go-cqhttp/data/images 目录下
+  img_save_dir: D:/XXX/DBot/go-cqhttp/data/images/monitor
 camera_list:
-  - ip: 192.168.1.1
+  - ip: 192.168.1.16
     username: username
     password: password
     location: A区域

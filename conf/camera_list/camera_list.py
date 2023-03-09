@@ -1,5 +1,5 @@
 import ruamel.yaml
-from utils.watch_config import WatchDogThread
+from DBot_SDK import WatchDogThread
 
 class CameraList:
     _config_path = ''

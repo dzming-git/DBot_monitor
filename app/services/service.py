@@ -9,7 +9,7 @@ from collections import OrderedDict
 def send_current_camera_image(gid=None, qid=None, msg_list=[]):
     message_parts = []
     if gid:
-        message_parts.append(f'[CQ:at,qq={qid}]\n')
+        message_parts.append(f'[CQ:at,qq={qid}]')
     hotkeys = msg_list
     cameras = []
     for hotkey in hotkeys:
@@ -120,11 +120,21 @@ def set_hotkey(gid=None, qid=None, msg_list=[]):
     message_send = '#设置热键 开发中......'
     return message_send
 
-
-
 func_dict = {
-    '#调取监控': lambda gid=None, qid=None, msg_list=[]: send_current_camera_image(gid, qid, msg_list),
-    '#监控列表': lambda gid=None, qid=None, msg_list=[]: send_camera_list(gid, qid, msg_list),
-    '#添加监控': lambda gid=None, qid=None, msg_list=[]: add_camera(gid, qid, msg_list),
-    '#设置热键': lambda gid=None, qid=None, msg_list=[]: set_hotkey(gid, qid, msg_list),
-}
+    '#调取监控': {
+        'func': send_current_camera_image,
+        'permission': 'USER'
+        },
+    '#监控列表': {
+        'func': send_camera_list,
+        'permission': 'USER'
+        },
+    '#添加监控': {
+        'func': add_camera,
+        'permission': 'MASTER'
+        },
+    '#设置热键': {
+        'func': set_hotkey,
+        'permission': 'MASTER'
+        },
+    }

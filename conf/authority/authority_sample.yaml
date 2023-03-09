@@ -1,50 +1,35 @@
-commands:
-  USER: &USER
-    - '#调取监控'
-    - '#监控列表'
-  ADMIN: &ADMIN
-    []
-  MASTER: &MASTER
-    - '#添加摄像头'
+# 该开关开启时，如果QQ在全局配置中有权限调用命令，但是该群并没有在配置文件中，也会做出响应
+GLOBAL_PERMISSION_FIRST: False
 
-permissions:
-  USER_PERMISSIONS: &USER_PERMISSIONS
-    - *USER
-  ADMIN_PERMISSIONS: &ADMIN_PERMISSIONS
-    - *USER
-    - *ADMIN
-  MASTER_PERMISSIONS: &MASTER_PERMISSIONS
-    - *USER
-    - *ADMIN
-    - *MASTER
+PERMISSION_LEVEL:
+  ROOT: &ROOT -1  # 调用所有命令的权限
+  NONE: &NONE 0  # 禁止调用任何命令的权限
+  # 正数权限为一般权限，用户可以自己设置
+  USER: &USER 1
+  ADMIN: &ADMIN 2
+  MASTER: &MASTER 3
 
-# 举例 
-authorities:
-  # 全局权限，其他位置不再需要配置
-  -1: 
-    666: permission: *MASTER_PERMISSIONS
-  # QQ1：123 MASTER
-  # QQ2：234 ADMIN
-  # 0:0代表该配置文件中已配置群（或私人聊天）但没有配置的人员的权限，即默认权限
-  # 0:qid代表私人聊天权限
-  0:
-    0:
-      permission: *USER_PERMISSIONS
-    123:
-      permission: *MASTER_PERMISSIONS
-    234:
-      permission: *ADMIN_PERMISSIONS
-  # 群号：123456
-  # QQ1：123 MASTER
-  # QQ2: 234 ADMIN
-  # QQ3: 456 USER
-  123456:
-    123:
-      permission: *MASTER_PERMISSIONS
-    234:
-      permission: *ADMIN_PERMISSIONS
-  # 群号：234567
-  # 所有人都是USER权限
-  234567:
-    {}
+AUTHORITIES:
+  # 全局配置
+  GLOBAL:
+    715558579:
+      PERMISSION: *ROOT
+
+  # 私人聊天
+  PRIVATE:
+    # 默认权限
+    DEFAULT:
+      PERMISSION: *NONE
+    347745673:
+      PERMISSION: *ADMIN
+
+  # 以下是群聊天的配置
+  772150487:
+    DEFAULT:
+      PERMISSION: *NONE
+    347745673:
+      PERMISSION: *ADMIN
   
+  917996925:
+    DEFAULT:
+      PERMISSION: *USER
