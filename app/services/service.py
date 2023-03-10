@@ -3,13 +3,11 @@ import cv2
 import os
 from datetime import datetime
 import numpy as np
+from DBot_SDK import send_message
 from conf.camera_list.camera_list import CameraList
 from collections import OrderedDict
 
 def send_current_camera_image(gid=None, qid=None, msg_list=[]):
-    message_parts = []
-    if gid:
-        message_parts.append(f'[CQ:at,qq={qid}]')
     hotkeys = msg_list
     cameras = []
     for hotkey in hotkeys:
@@ -20,6 +18,7 @@ def send_current_camera_image(gid=None, qid=None, msg_list=[]):
     cameras = list(OrderedDict.fromkeys(cameras))
     
     for ip_address, username, password, hotkey in cameras:
+        message_parts = []
         message_parts.append(f'热键 {hotkey}')
         if ip_address is None:
             message_parts.append('无效热键\n')
@@ -78,8 +77,8 @@ def send_current_camera_image(gid=None, qid=None, msg_list=[]):
             location = CameraList.get_location_by_hotkey(hotkey)
             time_str_send = time_now.strftime("%Y-%m-%d %H:%M:%S")
             message_parts.append(f"位置 {location}\n时间 {time_str_send}\n[CQ:image,file=monitor/{qid}_{gid}/{filename}]\n")
-    message_send = '\n'.join(message_parts).rstrip('\n')
-    return message_send
+        message_send = '\n'.join(message_parts).rstrip('\n')
+        send_message(message_send, gid, qid)
 
 
 def send_camera_list(gid=None, qid=None, msg_list=[]):
@@ -89,7 +88,7 @@ def send_camera_list(gid=None, qid=None, msg_list=[]):
     for camera in CameraList._camera_list:
         message_parts.append(f"IP地址 {camera['ip']}\n位置 {camera['location']}\n")
     message_send = '\n'.join(message_parts).rstrip('\n')
-    return message_send
+    send_message(message_send, gid, qid)
 
 def add_camera(gid=None, qid=None, msg_list=[]):
     message_parts = []
@@ -114,11 +113,11 @@ def add_camera(gid=None, qid=None, msg_list=[]):
             except:
                 message_parts.append('无法连接')
     message_send = '\n'.join(message_parts).rstrip('\n')
-    return message_send
+    send_message(message_send, gid, qid)
 
 def set_hotkey(gid=None, qid=None, msg_list=[]):
     message_send = '#设置热键 开发中......'
-    return message_send
+    send_message(message_send, gid, qid)
 
 func_dict = {
     '#调取监控': {
