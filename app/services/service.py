@@ -3,9 +3,20 @@ import cv2
 import os
 from datetime import datetime
 import numpy as np
-from DBot_SDK import send_message
+from DBot_SDK import send_message, Authority
 from conf.camera_list.camera_list import CameraList
 from collections import OrderedDict
+
+def help(gid=None, qid=None, args=[]):
+    permission_level = Authority.get_permission_level(gid, qid)
+    permission = Authority.get_permission_by_level(permission_level)
+    if gid:
+        message = f'[CQ:at,qq={qid}]\n'
+    message = f'关键词 {KEYWORD}\n当前权限 {permission}\n可调用指令如下\n'
+    for command in list(func_dict.keys()):
+        if Authority.check_command_permission(command, gid, qid):
+            message += f'  - {command}\n'
+    send_message(message.strip(), gid, qid)
 
 def send_current_camera_image(gid=None, qid=None, msg_list=[]):
     hotkeys = msg_list
@@ -119,20 +130,25 @@ def set_hotkey(gid=None, qid=None, msg_list=[]):
     message_send = '#设置热键 开发中......'
     send_message(message_send, gid, qid)
 
+KEYWORD = '#监控'
 func_dict = {
-    '#调取监控': {
+    '帮助':{
+        'func': help,
+        'permission': 'USER'
+        },
+    '调取': {
         'func': send_current_camera_image,
         'permission': 'USER'
         },
-    '#监控列表': {
+    '列表': {
         'func': send_camera_list,
         'permission': 'USER'
         },
-    '#添加监控': {
+    '添加': {
         'func': add_camera,
         'permission': 'MASTER'
         },
-    '#设置热键': {
+    '热键': {
         'func': set_hotkey,
         'permission': 'MASTER'
         },
