@@ -3,23 +3,31 @@ import cv2
 import os
 from datetime import datetime
 import numpy as np
-from DBot_SDK import send_message, Authority
+from dzmicro import send_message
 from conf.camera_list.camera_list import CameraList
 from collections import OrderedDict
 
-def help(gid=None, qid=None, args=[]):
-    permission_level = Authority.get_permission_level(gid, qid)
-    permission = Authority.get_permission_by_level(permission_level)
+def help(task):
+    from dzmicro import Authority
+    authority = Authority()
+    source_id = task.get('source_id', None)
+    platform = task.get('platform', None)
+    gid, qid = source_id
+    permission_level = authority.get_permission_level(source_id)
+    permission = authority.get_permission_by_level(permission_level)
     if gid:
         message = f'[CQ:at,qq={qid}]\n'
     message = f'关键词 {KEYWORD}\n当前权限 {permission}\n可调用指令如下\n'
     for command in list(func_dict.keys()):
-        if Authority.check_command_permission(command, gid, qid):
+        if authority.check_command_permission(command, source_id):
             message += f'  - {command}\n'
-    send_message(message.strip(), gid, qid)
+    send_message(message.strip(), source_id, platform)
 
-def send_current_camera_image(gid=None, qid=None, msg_list=[]):
-    hotkeys = msg_list
+def send_current_camera_image(task):
+    source_id = task.get('source_id', None)
+    platform = task.get('platform', None)
+    gid, qid = source_id
+    hotkeys = task.get('args', [])
     cameras = []
     for hotkey in hotkeys:
         # 海康威视摄像头信息
@@ -89,26 +97,33 @@ def send_current_camera_image(gid=None, qid=None, msg_list=[]):
             time_str_send = time_now.strftime("%Y-%m-%d %H:%M:%S")
             message_parts.append(f"位置 {location}\n时间 {time_str_send}\n[CQ:image,file=monitor/{qid}_{gid}/{filename}]\n")
         message_send = '\n'.join(message_parts).rstrip('\n')
-        send_message(message_send, gid, qid)
+        send_message(message_send, source_id, platform)
 
 
-def send_camera_list(gid=None, qid=None, msg_list=[]):
+def send_camera_list(task):
+    source_id = task.get('source_id', None)
+    platform = task.get('platform', None)
+    gid, qid = source_id
     message_parts = []
     if gid:
         message_parts.append(f'[CQ:at,qq={qid}]')
     for camera in CameraList._camera_list:
         message_parts.append(f"IP地址 {camera['ip']}\n位置 {camera['location']}\n")
     message_send = '\n'.join(message_parts).rstrip('\n')
-    send_message(message_send, gid, qid)
+    send_message(message_send, source_id, platform)
 
-def add_camera(gid=None, qid=None, msg_list=[]):
+def add_camera(task):
+    source_id = task.get('source_id', None)
+    platform = task.get('platform', None)
+    args = task.get('args', [])
+    gid, qid = source_id
     message_parts = []
     if gid:
         message_parts.append(f'[CQ:at,qq={qid}]')
-    if len(msg_list) != 3:
+    if len(args) != 3:
         message_parts.append('参数数量错误')
     else:
-        ip_address , username, password = msg_list
+        ip_address , username, password = args
         ip_list = CameraList.get_camera_ip_list()
         if ip_address in ip_list:
             message_parts.append('该摄像头已存在')
@@ -124,11 +139,14 @@ def add_camera(gid=None, qid=None, msg_list=[]):
             except:
                 message_parts.append('无法连接')
     message_send = '\n'.join(message_parts).rstrip('\n')
-    send_message(message_send, gid, qid)
+    send_message(message_send, source_id, platform)
 
-def set_hotkey(gid=None, qid=None, msg_list=[]):
+def set_hotkey(task):
+    source_id = task.get('source_id', None)
+    platform = task.get('platform', None)
+    gid, qid = source_id
     message_send = '#设置热键 开发中......'
-    send_message(message_send, gid, qid)
+    send_message(message_send, source_id, platform)
 
 KEYWORD = '#监控'
 func_dict = {

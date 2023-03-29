@@ -13,24 +13,24 @@ PERMISSION_LEVEL:
 AUTHORITIES:
   # 全局配置
   GLOBAL:
-    715558579:
+    '715558579':
       PERMISSION: *ROOT
 
   # 私人聊天
-  PRIVATE:
+  None:
     # 默认权限
     DEFAULT:
       PERMISSION: *NONE
-    347745673:
+    '347745673':
       PERMISSION: *ADMIN
 
   # 以下是群聊天的配置
-  772150487:
+  '772150487':
     DEFAULT:
       PERMISSION: *NONE
-    347745673:
+    '347745673':
       PERMISSION: *ADMIN
   
-  917996925:
+  '917996925':
     DEFAULT:
       PERMISSION: *USER
